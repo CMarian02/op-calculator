@@ -87,121 +87,173 @@ class MainPage(tk.Frame):
         button_ans = tk.Button(button_frame, text = "=", font = ('bebas Neue', 20), image = NonePhoto, compound = "c", width =100, height = 80, cursor = "hand2", command = lambda:self.button_pressed("=", 0))
         button_ans.grid(row = 4, column = 3)
         
-        global times
-        global number_one
-        global number_two
-        global operator
-        global nr
-        global z
-        global n
+        #Global Variables
+        global nr, z , round_factor, second_operator, operator, number_two, number_one, btn_press, high_round_n1, high_round_n2
+        second_operator = 0
         z = 1
-        n = 0
+        round_factor = 0
         nr = 0
-        times = 0
+        btn_press = 0
     
-    def button_pressed(self, button_type, number):
-        global number_one
-        global number_two
-        global operator
-        global times
-        global nr
-        global z
-        global n
-
+    def button_pressed(self, button_type, number): 
+        #Global Variables
+        global number_one, number_two, operator, btn_press, nr, z, round_factor, second_operator, high_round_n1, high_round_n2
+        #Create Number One
+        
+        
         if button_type == "Number" and nr == 0:
-            if times == 0:
+            if btn_press == 0:
                 number_one = number
-                times += 1
-            elif times == -1:
+                btn_press += 1
+            elif btn_press == -1:
                 z *= 10
-                if z <= pow(10,15):
-                    n += 1
+                if z <= pow(10,10):
+                    round_factor += 1
+                    high_round_n1 = round_factor
                     number_one = (number_one * z + number)/z
-                    number_one = round(number_one, n)
+                    number_one = round(number_one, round_factor)
                     print(f"Number one: {number_one}")
                 else:
-                    print("You try to enter many numbers!")
+                    print("You cannot enter more than 10 characters after the comma!")
             else:
                 number_one = number_one * 10 + number
-                
-        if button_type == "+" and times != 0:
+        
+        
+        
+        
+        
+        #Verify operators when you press
+        if button_type == "+" and btn_press != 0:
             operator = "+"
             nr = 2
-            times = 0
+            second_operator = "+"
+            btn_press = 0
             z = 1
-            n = 1
-        if button_type == "-" and times != 0:
+            round_factor = 1
+        if button_type == "-" and btn_press != 0:
             operator = "-"
             nr = 2
-            times = 0
-            n = 1
-        if button_type == "X" and times != 0:
+            btn_press = 0
+            second_operator = "-"
+            z = 1
+            round_factor = 1
+        if button_type == "X" and btn_press != 0:
             operator = "X"
             nr = 2
-            times = 0
-            n = 1
-        if button_type == "/" and times != 0:
+            btn_press = 0
+            second_operator = "X"
+            z = 1
+            round_factor = 1
+        if button_type == "/" and btn_press != 0:
             operator = "/"
             nr = 2
-            times = 0 
-            n = 1
-        if button_type == "%" and times != 0:
+            btn_press = 0 
+            second_operator = "/"
+            round_factor = 1
+            z = 1
+        if button_type == "%" and btn_press != 0:
             operator = "%"
             nr = 2
-            times = 0
-            n = 1
-        if button_type == "," and times != 0:
-            times = -1
+            btn_press = 0
+            second_operator = "%"
+            round_factor = 1
+            z = 1
+        
+        
+        
+        #Verify if you pres ','
+        if button_type == "," and btn_press != 0:
+            btn_press = -1
             operator = ","
+        
+        
+        
+        # Create Number Two
         if button_type == "Number" and nr == 2:
-            if times == 0:
+            if btn_press == 0:
                 number_two = number
-                times += 1
-            elif times == -1:
+                btn_press += 1
+            elif btn_press == -1:
                 z *= 10
-                if z <= pow(10,1):
-                    n +=1
+                if z <= pow(10,10):
+                    round_factor +=1
+                    high_round_n2 = round_factor
                     number_two = (number_two * z + number)/z
-                    number_two = round(number_two, n)
+                    number_two = round(number_two, round_factor)
                     print(f"Number two: {number_two}")
                 else:
-                    print("You try to enter many numbers!")
+                    print("You cannot enter more than 10 characters after the comma!")
             else:
                 number_two = number_two * 10 + number
+        
+        
+        
+        # Buttons for Clear Character and Clear All
         if button_type == "AC":
-            operator = "AC"
+            number_one = 0
+            number_two = 0 
+            btn_press = 0
+            nr = 0
+            z = 1
+            second_operator = 0
         if button_type == "CC":
             if nr != 2:
                 operator = "CC1"
             else:
                 operator = "CC2"
 
-
-        if button_type == "=" and times != 0:
+        #Verify conditions for equal
+        if button_type == "=" and btn_press != 0:
             if operator == "+":
                 display = number_one + number_two
+                final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                print(final_ec)
             if operator == "-":
                 display = number_one - number_two
+                final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                print(final_ec)
             if operator == "X":
                 display = number_one * number_two
+                final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                print(final_ec)
             if operator == "/":
-                display = number_one/number_two
+                display = number_one / number_two
+                final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                print(final_ec)
             if operator == "%":
-                display = number_one%number_two
-            if operator == "AC":
-                pass
-            if operator == "CC":
-                pass
-            times = 0
+                display = number_one % number_two
+                final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                print(final_ec)
+            if operator == ',' and second_operator == "+":
+                display = number_one + number_two
+                
+                #if high_round_n1 > high_round_n2:
+                #    display = round(display, high_round_n1)
+                #else:
+                #    display = round(display, high_round_n2)
+            if operator == ',' and second_operator == "-":
+                display = number_one - number_two
+            if operator == ',' and second_operator == "X":
+                display = number_one * number_two
+                if high_round_n1 > high_round_n2:
+                  display = round(display, high_round_n1)
+                  print(high_round_n1)
+                else:
+                    display = round(display, high_round_n2)
+                    print(f"{high_round_n2} aaa")
+            if operator == ',' and second_operator == "/":
+                display = number_one / number_two
+            if operator == ',' and second_operator == "%":
+                display = number_one % number_two
+            
+            #Reset Variables
+            btn_press = 0
             number_one = 0
             number_two = 0
             nr = 0
             z = 1 
+            second_operator = 0
             print(display)
-
-
-
-
 
 
 if __name__ == "__main__":
