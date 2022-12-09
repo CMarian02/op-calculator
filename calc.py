@@ -40,7 +40,9 @@ class MainPage(tk.Frame):
         main_frame = tk.Frame(self, width = 520, height = 520, bg = "white")
         main_frame.pack(fill = "both", expand = True)
         display_frame = tk.Frame(main_frame, width = 520, height = 120, bg = "red")
-        display_frame.pack(fill = "x")
+        display_frame.pack(fill = "both", expand = True)
+        self.eq_label = tk.Label(display_frame,text = "", font = ("Bebas Neue", 16), bg = "green", fg = "white")
+        self.eq_label.place(relx = 1, x = 0, y = 1, anchor = "ne")
         button_frame = tk.Frame(main_frame, width = 520, height = 400, bg = "#0F4C75")
         button_frame.pack(fill = 'both', expand = True)
         NonePhoto = tk.PhotoImage(width = 1, height = 1)
@@ -91,6 +93,7 @@ class MainPage(tk.Frame):
         global number_is, z , round_factor, second_operator, operator, number_two, number_one, btn_press, high_round_n1, high_round_n2
         second_operator = 0
         z = 1
+        operator = 0 
         round_factor = 0
         number_is = 0
         btn_press = 0
@@ -275,6 +278,7 @@ class MainPage(tk.Frame):
             number_is = 0
             z = 1 
             second_operator = 0
+            self.eq_label.config(text = final_ec)
             #Check if variables is fine.
             print(display)
             print(final_ec)
