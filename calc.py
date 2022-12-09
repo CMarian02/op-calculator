@@ -8,7 +8,6 @@ class MainApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, *kwargs)
         
-
         self.verify_resolution()
         self.title('OPCalculator')
         self.resizable(False,False)
@@ -24,7 +23,8 @@ class MainApp(tk.Tk):
     def show_frame(self, page):
         frame = self.frames[page]
         frame.tkraise()
-    
+
+    #Move window on middle screen
     def verify_resolution(self):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -88,20 +88,20 @@ class MainPage(tk.Frame):
         button_ans.grid(row = 4, column = 3)
         
         #Global Variables
-        global nr, z , round_factor, second_operator, operator, number_two, number_one, btn_press, high_round_n1, high_round_n2
+        global number_is, z , round_factor, second_operator, operator, number_two, number_one, btn_press, high_round_n1, high_round_n2
         second_operator = 0
         z = 1
         round_factor = 0
-        nr = 0
+        number_is = 0
         btn_press = 0
-    
+        
     def button_pressed(self, button_type, number): 
+        
         #Global Variables
-        global number_one, number_two, operator, btn_press, nr, z, round_factor, second_operator, high_round_n1, high_round_n2
+        global number_one, number_two, operator, btn_press, number_is, z, round_factor, second_operator, high_round_n1, high_round_n2
+        
         #Create Number One
-        
-        
-        if button_type == "Number" and nr == 0:
+        if button_type == "Number" and number_is == 0:
             if btn_press == 0:
                 number_one = number
                 btn_press += 1
@@ -113,63 +113,56 @@ class MainPage(tk.Frame):
                     number_one = (number_one * z + number)/z
                     number_one = round(number_one, round_factor)
                     print(f"Number one: {number_one}")
+
                 else:
                     print("You cannot enter more than 10 characters after the comma!")
             else:
                 number_one = number_one * 10 + number
         
-        
-        
-        
-        
         #Verify operators when you press
         if button_type == "+" and btn_press != 0:
             operator = "+"
-            nr = 2
+            number_is = 2
             second_operator = "+"
             btn_press = 0
             z = 1
             round_factor = 1
         if button_type == "-" and btn_press != 0:
             operator = "-"
-            nr = 2
+            number_is = 2
             btn_press = 0
             second_operator = "-"
             z = 1
             round_factor = 1
         if button_type == "X" and btn_press != 0:
             operator = "X"
-            nr = 2
+            number_is = 2
             btn_press = 0
             second_operator = "X"
             z = 1
             round_factor = 1
         if button_type == "/" and btn_press != 0:
             operator = "/"
-            nr = 2
+            number_is = 2
             btn_press = 0 
             second_operator = "/"
             round_factor = 1
             z = 1
         if button_type == "%" and btn_press != 0:
             operator = "%"
-            nr = 2
+            number_is = 2
             btn_press = 0
             second_operator = "%"
             round_factor = 1
             z = 1
-        
-        
         
         #Verify if you pres ','
         if button_type == "," and btn_press != 0:
             btn_press = -1
             operator = ","
         
-        
-        
         # Create Number Two
-        if button_type == "Number" and nr == 2:
+        if button_type == "Number" and number_is == 2:
             if btn_press == 0:
                 number_two = number
                 btn_press += 1
@@ -193,68 +186,98 @@ class MainPage(tk.Frame):
             number_one = 0
             number_two = 0 
             btn_press = 0
-            nr = 0
+            number_is = 0
             z = 1
             second_operator = 0
+        
+        # Use 2 methods to remove a character from the number, first - when is int with // ;
+        # second - when is float with a combination float(str()[:-1])
+
         if button_type == "CC":
-            if nr != 2:
-                operator = "CC1"
+            if number_is != 2:
+                if operator == ',':
+                    number_one = float(str(number_one)[:-1])
+                    z = z/10
+                else:
+                    number_one = number_one // 10
+                print(number_one)
             else:
-                operator = "CC2"
+                if operator == ',':
+                    number_two = float(str(number_two)[:-1])
+                    z = z/10
+                else:
+                    number_two = number_two // 10
 
         #Verify conditions for equal
         if button_type == "=" and btn_press != 0:
             if operator == "+":
                 display = number_one + number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
-                print(final_ec)
             if operator == "-":
                 display = number_one - number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
-                print(final_ec)
             if operator == "X":
                 display = number_one * number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
-                print(final_ec)
             if operator == "/":
                 display = number_one / number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
-                print(final_ec)
             if operator == "%":
                 display = number_one % number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
-                print(final_ec)
+            
+            #Verify equal when a number is float, and round up after the longest
             if operator == ',' and second_operator == "+":
                 display = number_one + number_two
-                
-                #if high_round_n1 > high_round_n2:
-                #    display = round(display, high_round_n1)
-                #else:
-                #    display = round(display, high_round_n2)
+                if high_round_n1 > high_round_n2:
+                  display = round(display, high_round_n1)
+                  final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                else:
+                    display = round(display, high_round_n2)
+                    final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
             if operator == ',' and second_operator == "-":
                 display = number_one - number_two
+                if high_round_n1 > high_round_n2:
+                  display = round(display, high_round_n1)
+                  final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                else:
+                    display = round(display, high_round_n2)
+                    final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
             if operator == ',' and second_operator == "X":
                 display = number_one * number_two
                 if high_round_n1 > high_round_n2:
                   display = round(display, high_round_n1)
-                  print(high_round_n1)
+                  final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
                 else:
                     display = round(display, high_round_n2)
-                    print(f"{high_round_n2} aaa")
+                    final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
             if operator == ',' and second_operator == "/":
                 display = number_one / number_two
+                if high_round_n1 > high_round_n2:
+                  display = round(display, high_round_n1)
+                  final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                else:
+                    display = round(display, high_round_n2)
+                    final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
             if operator == ',' and second_operator == "%":
                 display = number_one % number_two
+                if high_round_n1 > high_round_n2:
+                  display = round(display, high_round_n1)
+                  final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                else:
+                    display = round(display, high_round_n2)
+                    final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
             
             #Reset Variables
             btn_press = 0
             number_one = 0
             number_two = 0
-            nr = 0
+            number_is = 0
             z = 1 
             second_operator = 0
+            #Check if variables is fine.
             print(display)
-
+            print(final_ec)
 
 if __name__ == "__main__":
     app = MainApp()
