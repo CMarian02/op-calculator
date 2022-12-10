@@ -41,8 +41,10 @@ class MainPage(tk.Frame):
         main_frame.pack(fill = "both", expand = True)
         display_frame = tk.Frame(main_frame, width = 520, height = 120, bg = "red")
         display_frame.pack(fill = "both", expand = True)
-        self.eq_label = tk.Label(display_frame,text = "", font = ("Bebas Neue", 16), bg = "green", fg = "white")
-        self.eq_label.place(relx = 1, x = 0, y = 1, anchor = "ne")
+        self.eq_label = tk.Label(display_frame,text = "", font = ("Bebas Neue", 20), bg = "green", fg = "white")
+        self.eq_label.place(relx = 1, x = 0, y = 0, anchor = "ne")
+        self.eq2_label = tk.Label(display_frame, text ="", font = ('Bebas Neue', 35), bg = "yellow", fg = "black")
+        self.eq2_label.place(relx = 0, x = 550, y = 120, anchor = "se")
         button_frame = tk.Frame(main_frame, width = 520, height = 400, bg = "#0F4C75")
         button_frame.pack(fill = 'both', expand = True)
         NonePhoto = tk.PhotoImage(width = 1, height = 1)
@@ -96,6 +98,8 @@ class MainPage(tk.Frame):
         operator = 0 
         round_factor = 0
         number_is = 0
+        high_round_n1 = 0
+        high_round_n2 = 0
         btn_press = 0
         
     def button_pressed(self, button_type, number): 
@@ -107,6 +111,7 @@ class MainPage(tk.Frame):
         if button_type == "Number" and number_is == 0:
             if btn_press == 0:
                 number_one = number
+                self.eq2_label.config(text = number_one)
                 btn_press += 1
             elif btn_press == -1:
                 z *= 10
@@ -115,17 +120,20 @@ class MainPage(tk.Frame):
                     high_round_n1 = round_factor
                     number_one = (number_one * z + number)/z
                     number_one = round(number_one, round_factor)
+                    self.eq2_label.config(text = number_one)
                     print(f"Number one: {number_one}")
 
                 else:
                     print("You cannot enter more than 10 characters after the comma!")
             else:
                 number_one = number_one * 10 + number
+                self.eq2_label.config(text = number_one)
         
         #Verify operators when you press
         if button_type == "+" and btn_press != 0:
             operator = "+"
             number_is = 2
+            self.eq2_label.config(text = str(number_one) +" "+ str(operator))
             second_operator = "+"
             btn_press = 0
             z = 1
@@ -133,6 +141,7 @@ class MainPage(tk.Frame):
         if button_type == "-" and btn_press != 0:
             operator = "-"
             number_is = 2
+            self.eq2_label.config(text = str(number_one) +" "+ str(operator))
             btn_press = 0
             second_operator = "-"
             z = 1
@@ -140,6 +149,7 @@ class MainPage(tk.Frame):
         if button_type == "X" and btn_press != 0:
             operator = "X"
             number_is = 2
+            self.eq2_label.config(text = str(number_one) +" "+ str(operator))
             btn_press = 0
             second_operator = "X"
             z = 1
@@ -147,6 +157,7 @@ class MainPage(tk.Frame):
         if button_type == "/" and btn_press != 0:
             operator = "/"
             number_is = 2
+            self.eq2_label.config(text = str(number_one) +" "+ str(operator))
             btn_press = 0 
             second_operator = "/"
             round_factor = 1
@@ -154,6 +165,7 @@ class MainPage(tk.Frame):
         if button_type == "%" and btn_press != 0:
             operator = "%"
             number_is = 2
+            self.eq2_label.config(text = str(number_one) +" "+ str(operator))
             btn_press = 0
             second_operator = "%"
             round_factor = 1
@@ -168,6 +180,7 @@ class MainPage(tk.Frame):
         if button_type == "Number" and number_is == 2:
             if btn_press == 0:
                 number_two = number
+                self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
                 btn_press += 1
             elif btn_press == -1:
                 z *= 10
@@ -176,11 +189,13 @@ class MainPage(tk.Frame):
                     high_round_n2 = round_factor
                     number_two = (number_two * z + number)/z
                     number_two = round(number_two, round_factor)
+                    self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
                     print(f"Number two: {number_two}")
                 else:
                     print("You cannot enter more than 10 characters after the comma!")
             else:
                 number_two = number_two * 10 + number
+                self.eq2_label.config(text = str(number_one) +" "+ str(operator) +" "+ str(number_two))
         
         
         
@@ -191,6 +206,7 @@ class MainPage(tk.Frame):
             btn_press = 0
             number_is = 0
             z = 1
+            self.eq2_label.config(text = "")
             second_operator = 0
         
         # Use 2 methods to remove a character from the number, first - when is int with // ;
@@ -201,33 +217,42 @@ class MainPage(tk.Frame):
                 if operator == ',':
                     number_one = float(str(number_one)[:-1])
                     z = z/10
+                    self.eq2_label.config(text = number_one)
                 else:
                     number_one = number_one // 10
+                    self.eq2_label.config(text = number_one)
                 print(number_one)
             else:
                 if operator == ',':
                     number_two = float(str(number_two)[:-1])
+                    self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
                     z = z/10
                 else:
                     number_two = number_two // 10
+                    self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
 
         #Verify conditions for equal
         if button_type == "=" and btn_press != 0:
             if operator == "+":
                 display = number_one + number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                self.eq2_label.config(text = display)
             if operator == "-":
                 display = number_one - number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                self.eq2_label.config(text = display)
             if operator == "X":
                 display = number_one * number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                self.eq2_label.config(text = display)
             if operator == "/":
                 display = number_one / number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                self.eq2_label.config(text = display)
             if operator == "%":
                 display = number_one % number_two
                 final_ec = str(number_one)+" "+str(operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                self.eq2_label.config(text = display)
             
             #Verify equal when a number is float, and round up after the longest
             if operator == ',' and second_operator == "+":
@@ -235,41 +260,51 @@ class MainPage(tk.Frame):
                 if high_round_n1 > high_round_n2:
                   display = round(display, high_round_n1)
                   final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                  self.eq2_label.config(text = display)
                 else:
                     display = round(display, high_round_n2)
                     final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                    self.eq2_label.config(text = display)
             if operator == ',' and second_operator == "-":
                 display = number_one - number_two
                 if high_round_n1 > high_round_n2:
                   display = round(display, high_round_n1)
                   final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                  self.eq2_label.config(text = display)
                 else:
                     display = round(display, high_round_n2)
                     final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                    self.eq2_label.config(text = display)
             if operator == ',' and second_operator == "X":
                 display = number_one * number_two
                 if high_round_n1 > high_round_n2:
                   display = round(display, high_round_n1)
                   final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                  self.eq2_label.config(text = display)
                 else:
                     display = round(display, high_round_n2)
                     final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                    self.eq2_label.config(text = display)
             if operator == ',' and second_operator == "/":
                 display = number_one / number_two
                 if high_round_n1 > high_round_n2:
                   display = round(display, high_round_n1)
                   final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                  self.eq2_label.config(text = display)
                 else:
                     display = round(display, high_round_n2)
                     final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                    self.eq2_label.config(text = display)
             if operator == ',' and second_operator == "%":
                 display = number_one % number_two
                 if high_round_n1 > high_round_n2:
                   display = round(display, high_round_n1)
                   final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                  self.eq2_label.config(text = display)
                 else:
                     display = round(display, high_round_n2)
                     final_ec = str(number_one)+" "+str(second_operator)+" "+str(number_two)+" "+"="+" "+ str(display)
+                    self.eq2_label.config(text = display)
             
             #Reset Variables
             btn_press = 0
@@ -279,6 +314,7 @@ class MainPage(tk.Frame):
             z = 1 
             second_operator = 0
             self.eq_label.config(text = final_ec)
+            
             #Check if variables is fine.
             print(display)
             print(final_ec)
