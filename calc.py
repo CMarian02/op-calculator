@@ -204,6 +204,7 @@ class MainPage(tk.Frame):
             number_one = 0
             number_two = 0 
             btn_press = 0
+            operator = ""
             number_is = 0
             z = 1
             self.eq2_label.config(text = "")
@@ -314,7 +315,7 @@ class MainPage(tk.Frame):
             z = 1 
             second_operator = 0
             self.eq_label.config(text = final_ec)
-            
+
             #Check if variables is fine.
             print(display)
             print(final_ec)
