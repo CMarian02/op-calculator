@@ -115,7 +115,7 @@ class MainPage(tk.Frame):
                 btn_press += 1
             elif btn_press == -1:
                 z *= 10
-                if z <= pow(10,10):
+                if len(str(number_one)) <=12:
                     round_factor += 1
                     high_round_n1 = round_factor
                     number_one = (number_one * z + number)/z
@@ -124,10 +124,13 @@ class MainPage(tk.Frame):
                     print(f"Number one: {number_one}")
 
                 else:
-                    print("You cannot enter more than 10 characters after the comma!")
+                    print("You cannot enter more than 15 characters!")
             else:
-                number_one = number_one * 10 + number
-                self.eq2_label.config(text = number_one)
+                if len(str(number_one)) <= 12:
+                    number_one = number_one * 10 + number
+                    self.eq2_label.config(text = number_one)
+                else:
+                    print("You cannot enter more than 15 characters!")
         
         #Verify operators when you press
         if button_type == "+" and btn_press != 0:
@@ -184,7 +187,7 @@ class MainPage(tk.Frame):
                 btn_press += 1
             elif btn_press == -1:
                 z *= 10
-                if z <= pow(10,10):
+                if len(str(number_two)) <= 12:
                     round_factor +=1
                     high_round_n2 = round_factor
                     number_two = (number_two * z + number)/z
@@ -192,11 +195,13 @@ class MainPage(tk.Frame):
                     self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
                     print(f"Number two: {number_two}")
                 else:
-                    print("You cannot enter more than 10 characters after the comma!")
+                    print("You cannot enter more than 15 characters!")
             else:
-                number_two = number_two * 10 + number
-                self.eq2_label.config(text = str(number_one) +" "+ str(operator) +" "+ str(number_two))
-        
+                if len(str(number_two)) <= 12:
+                    number_two = number_two * 10 + number
+                    self.eq2_label.config(text = str(number_one) +" "+ str(operator) +" "+ str(number_two))
+                else:
+                    print("You cannot enter more than 15 characters!")
         
         
         # Buttons for Clear Character and Clear All
