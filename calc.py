@@ -51,6 +51,7 @@ class MainPage(tk.Frame):
         #color #1B262C
         button_clearall = tk.Button(button_frame, text = "AC", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("AC", 0))
         button_clearall.grid(row = 0, column = 0, sticky = tk.W)
+        self.controller.bind("<Shift_L> <BackSpace>", lambda event:self.button_pressed("AC", 0))
         button_clearone = tk.Button(button_frame, text = "CC", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("CC", 0))
         button_clearone.grid(row = 0, column = 1, stick = tk.W)
         self.controller.bind("<BackSpace>", lambda event: self.button_pressed("CC", 0))
@@ -96,6 +97,7 @@ class MainPage(tk.Frame):
         self.controller.bind("3", lambda event: self.button_pressed("Number", 3))
         button_plu = tk.Button(button_frame, text = "+", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =100, height = 80, cursor = "hand2", command = lambda:self.button_pressed("+", 0))
         button_plu.grid(row = 3, column = 3)
+        self.controller.bind("+", lambda event: self.button_pressed("+", 0))
         button_next_pag = tk.Button(button_frame, text = ">>", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed(">>", 0))
         button_next_pag.grid(row = 4, column = 0)
         button_zer = tk.Button(button_frame, text = "0", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("Number", 0))
@@ -118,6 +120,7 @@ class MainPage(tk.Frame):
         high_round_n1 = 0
         high_round_n2 = 0
         btn_press = 0
+        
         
     def button_pressed(self, button_type, number):
         #Global Variables
