@@ -53,10 +53,13 @@ class MainPage(tk.Frame):
         button_clearall.grid(row = 0, column = 0, sticky = tk.W)
         button_clearone = tk.Button(button_frame, text = "CC", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("CC", 0))
         button_clearone.grid(row = 0, column = 1, stick = tk.W)
+        self.controller.bind("<BackSpace>", lambda event: self.button_pressed("CC", 0))
         button_mod = tk.Button(button_frame, text = "%", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("%", 0))
         button_mod.grid(row = 0, column = 2, sticky = tk.W)
+        self.controller.bind("%", lambda event: self.button_pressed("%", 0))
         button_div = tk.Button(button_frame, text = "/", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =100, height = 80, cursor = "hand2", command = lambda:self.button_pressed("/", 0))
         button_div.grid(row = 0, column = 3, sticky = tk.W)
+        self.controller.bind("/", lambda event: self.button_pressed("/", 0))
         button_sev = tk.Button(button_frame, text = "7", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("Number", 7))
         button_sev.image = NonePhoto
         button_sev.grid(row = 1, column = 0)
@@ -69,6 +72,7 @@ class MainPage(tk.Frame):
         self.controller.bind("9", lambda event: self.button_pressed("Number", 9))
         button_mul = tk.Button(button_frame, text = "X", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =100, height = 80, cursor = "hand2", command = lambda:self.button_pressed("X", 0))
         button_mul.grid(row = 1, column = 3)
+        self.controller.bind("*", lambda event: self.button_pressed("X", 0))
         button_fou = tk.Button(button_frame, text = "4", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("Number", 4))
         button_fou.grid(row = 2, column = 0)
         self.controller.bind("4", lambda event: self.button_pressed("Number", 4))
@@ -80,6 +84,7 @@ class MainPage(tk.Frame):
         self.controller.bind("6", lambda event: self.button_pressed("Number", 6))
         button_min = tk.Button(button_frame, text = "-", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =100, height = 80, cursor = "hand2", command = lambda:self.button_pressed("-", -1))
         button_min.grid(row = 2, column = 3)
+        self.controller.bind("-", lambda event: self.button_pressed("-", -1))
         button_one = tk.Button(button_frame, text = "1", font = ('Bebas Neue', 20), image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("Number", 1))
         button_one.grid(row = 3, column = 0)
         self.controller.bind("1", lambda event: self.button_pressed("Number", 1))
@@ -114,8 +119,7 @@ class MainPage(tk.Frame):
         high_round_n2 = 0
         btn_press = 0
         
-    def button_pressed(self, button_type, number): 
-        print('a')
+    def button_pressed(self, button_type, number):
         #Global Variables
         global number_one, number_two, operator, btn_press, number_is, z, round_factor, second_operator, high_round_n1, high_round_n2
         
