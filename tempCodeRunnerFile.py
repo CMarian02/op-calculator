@@ -1,0 +1,1 @@
+number_one = float(str(number_one)[:-1])
