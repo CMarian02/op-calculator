@@ -17,8 +17,8 @@ class MainApp(tk.Tk):
         #title_text = tk.Label(title_bar, text = "Calculator", font =('Bebas Neue', 12), fg = 'white')
         #title_text.grid(row = 0, column = 0)
         #exit_btn = tk.Button(title_bar, text = 'X', fg = "darkred", bg = "grey", font = ('Bebas Neue', 14), width = 10, height = 10, image = NonePhoto, compound = "c")
-       # exit_btn.grid(row = 0, column = 1, sticky = "EW", columnspan = 2)                                                   
-       # title_bar.pack(expand = 1, fill = 'x')
+        #exit_btn.grid(row = 0, column = 1, sticky = "EW", columnspan = 2)                                                   
+        #title_bar.pack(expand = 1, fill = 'x')
         self.container = tk.Frame(self)
         self.container.pack(side = 'top', fill = 'both', expand = True)
         self.container.grid_rowconfigure(0, weight = 1)
@@ -141,8 +141,8 @@ class MainPage(tk.Frame):
                 self.eq2_label.config(text = number_one)
                 btn_press += 1
             elif btn_press == -1:
-                z *= 10
                 if len(str(number_one)) <=12:
+                    z *= 10
                     round_factor += 1
                     high_round_n1 = round_factor
                     number_one = (number_one * z + number)/z
@@ -151,13 +151,13 @@ class MainPage(tk.Frame):
                     print(f"Number one: {number_one}")
 
                 else:
-                    print("You cannot enter more than 15 characters!")
+                    print("You cannot enter more than 12 characters!")
             else:
                 if len(str(number_one)) <= 12:
                     number_one = number_one * 10 + number
                     self.eq2_label.config(text = number_one)
                 else:
-                    print("You cannot enter more than 15 characters!")
+                    print("You cannot enter more than 12 characters!")
         
         #Verify operators when you press
         if button_type == "+" and btn_press != 0:
@@ -203,8 +203,11 @@ class MainPage(tk.Frame):
         
         #Verify if you pres ','
         if button_type == "," and btn_press != 0:
-            btn_press = -1
-            operator = ","
+            if len(str(number_one)) < 12:
+                btn_press = -1
+                operator = ","
+            else:
+                print("You cannot enter more than 12 characters!")
         
         # Create Number Two
         if button_type == "Number" and number_is == 2:
@@ -213,8 +216,8 @@ class MainPage(tk.Frame):
                 self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
                 btn_press += 1
             elif btn_press == -1:
-                z *= 10
                 if len(str(number_two)) <= 12:
+                    z *= 10
                     round_factor +=1
                     high_round_n2 = round_factor
                     number_two = (number_two * z + number)/z
@@ -248,21 +251,47 @@ class MainPage(tk.Frame):
         if button_type == "CC":
             if number_is != 2:
                 if operator == ',':
-                    number_one = float(str(number_one)[:-1])
-                    z = z/10
-                    self.eq2_label.config(text = number_one)
+                    if len(str(int(z))) == 2:
+                        number_one = int(number_one)
+                        operator = "eRRor01"
+                        self.eq2_label.config(text = number_one)
+                    else:
+                        number_one = float(str(number_one)[:-1])
+                        z = int(z/10)
+                        self.eq2_label.config(text = number_one)
                 else:
-                    number_one = number_one // 10
-                    self.eq2_label.config(text = number_one)
-                print(number_one)
+                    if len(str(number_one)) == 1:
+                        self.eq2_label.config(text = "")
+                        btn_press = 0
+                        number_one = 0
+                        number_is = 0
+                        round_factor = 1
+                        z = 1
+                        operator = second_operator
+                    else:
+                        number_one = number_one // 10
+                        self.eq2_label.config(text = number_one)
             else:
                 if operator == ',':
-                    number_two = float(str(number_two)[:-1])
-                    self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
-                    z = z/10
+                    if len(str(int(z))) == 2:
+                        number_two = int(number_two)
+                        operator = "eRRor02"
+                        self.eq2_label.config(text = str(number_one) +" "+ str(second_operator))
+                    else:
+                        number_two = float(str(number_two)[:-1])
+                        z = int(z/10)
+                        self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
                 else:
-                    number_two = number_two // 10
-                    self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
+                    if len(str(number_two)) == 1:
+                        self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
+                        number_two = 0
+                        btn_press = 0
+                        round_factor = 1
+                        z = 1
+                        operator = second_operator
+                    else:
+                        number_two = number_two // 10
+                        self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
 
         #Verify conditions for equal
         if button_type == "=" and btn_press != 0:
