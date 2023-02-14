@@ -2,6 +2,7 @@
 import tkinter as tk
 from decimal import *
 from screeninfo import get_monitors
+from PIL import ImageTk, Image
 
 class MainApp(tk.Tk):
 
@@ -12,13 +13,8 @@ class MainApp(tk.Tk):
         self.verify_resolution()
         self.title('OPCalculator')
         self.resizable(False,False)
-        #self.overrideredirect(True)
-        #title_bar = tk.Frame(self, bg = "white", relief = 'raised', bd = 2, width = 520)
-        #title_text = tk.Label(title_bar, text = "Calculator", font =('Bebas Neue', 12), fg = 'white')
-        #title_text.grid(row = 0, column = 0)
-        #exit_btn = tk.Button(title_bar, text = 'X', fg = "darkred", bg = "grey", font = ('Bebas Neue', 14), width = 10, height = 10, image = NonePhoto, compound = "c")
-        #exit_btn.grid(row = 0, column = 1, sticky = "EW", columnspan = 2)                                                   
-        #title_bar.pack(expand = 1, fill = 'x')
+        self.favicon = ImageTk.PhotoImage(Image.open("img/favicon-100.png"))
+        self.iconphoto(False,self.favicon)
         self.container = tk.Frame(self)
         self.container.pack(side = 'top', fill = 'both', expand = True)
         self.container.grid_rowconfigure(0, weight = 1)
@@ -56,7 +52,6 @@ class MainPage(tk.Frame):
         button_frame = tk.Frame(main_frame, width = 520, height = 400, bg = "#242221")
         button_frame.pack(fill = 'both', expand = True)
         NonePhoto = tk.PhotoImage(width = 1, height = 1)
-        #color #1B262C
         button_clearall = tk.Button(button_frame, text = "AC", font = ('Bebas Neue', 20),bg = "#242221", fg = "#DE6639",borderwidth = 0, image = NonePhoto, compound = "c", width =140, height = 80, cursor = "hand2", command = lambda:self.button_pressed("AC", 0))
         button_clearall.grid(row = 0, column = 0, sticky = tk.W)
         self.controller.bind("<Shift_L> <BackSpace>", lambda event:self.button_pressed("AC", 0))
@@ -130,7 +125,6 @@ class MainPage(tk.Frame):
         high_round_n2 = 0
         btn_press = 0
         
-        
     def button_pressed(self, button_type, number):
         #Global Variables
         global number_one, number_two, operator, btn_press, number_is, z, numbers_created, round_factor, second_operator, high_round_n1, high_round_n2
@@ -142,15 +136,13 @@ class MainPage(tk.Frame):
                 self.eq2_label.config(text = number_one)
                 btn_press += 1
             elif btn_press == -1:
-                if len(str(number_one)) <=12:
-                    z *= 10
+                if len(str(number_one)) <= 12:
+                    z *= 10        
                     round_factor += 1
                     high_round_n1 = round_factor
                     number_one = (number_one * z + number)/z
                     number_one = round(number_one, round_factor)
                     self.eq2_label.config(text = number_one)
-                    print(f"Number one: {number_one}")
-
                 else:
                     print("You cannot enter more than 12 characters!")
             else:
@@ -240,7 +232,6 @@ class MainPage(tk.Frame):
                 else:
                     print("You cannot enter more than 15 characters!")
         
-        
         # Buttons for Clear Character and Clear All
         if button_type == "AC":
             number_one = 0
@@ -280,8 +271,7 @@ class MainPage(tk.Frame):
                         z = 1
                     else:
                         number_one = number_one // 10
-                        self.eq2_label.config(text = number_one)
-                        
+                        self.eq2_label.config(text = number_one)            
             else:
                 if operator == ',':
                     if len(str(int(z))) == 2:
@@ -306,14 +296,6 @@ class MainPage(tk.Frame):
                     else:
                         number_two = number_two // 10
                         self.eq2_label.config(text = str(number_one) +" "+ str(second_operator) +" "+ str(number_two))
-            #if number_is == 2 and btn_press == 0:
-                #operator = ""
-                #number_is = 0
-                #if high_round_n1 > 1:
-                    #btn_press = -1
-                #else:
-                    #btn_press = 2
-                #self.eq2_label.config(text = str(number_one) + " "+ str(operator))
                 
         #Verify conditions for equal
         if button_type == "=" and btn_press != 0 and numbers_created == True:
@@ -407,7 +389,7 @@ class MainPage(tk.Frame):
             z = 1 
             second_operator = 0
             self.eq_label.config(text = final_ec)
-            
+
             #Check if variables is fine.
             print(display)
             print(final_ec)

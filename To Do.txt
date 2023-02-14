@@ -1,7 +1,0 @@
-### 18/01/2023 ###
-->  Rezolva bug-ul ca atunci cand apesi C, si este ales un 'semn', sa mearga sa-l stergi si pe acesta.
-->  Atunci cand apesi 0 dupa un anumit nr de caractere, acesta nu este afisat pe display, ci doar dupa ce apesi pe un alt numar.(Acesta se stocheaza, dar nu este afisata), doar cand este numarul cu virgula.
-->  Daca ai ales un 'semn', acesta sa poata fi modificat daca apesi pe un altul (diferit de egal)
-->  Cand stergi numarul 2 apare un bug cand incerci sa-l rescrii <-SOLVED->
-->  Cand apesi CC si nu este nici un caracter, iti da eroare in consola, rezolva precum la semnul '='. <-SOLVED->
-->  
